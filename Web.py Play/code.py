@@ -36,8 +36,10 @@ class NewPostHandler:
         form = newPostForm()
         recvTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         if not form.validates():
+            print form.validators
             return render.newPost(form, False, recvTime)
         else:
+            db.insert('msg', name = form.d.username, mail = form.d.mail, time = recvTime, message = form.d.message)
             return render.newPost(form, True, recvTime)
             #return render.newPost(form)
             #return web.seeother('/')
