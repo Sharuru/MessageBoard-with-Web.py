@@ -1,33 +1,36 @@
 ﻿import web
-from web import form
+import time
 
 render = web.template.render('templates/')
 
 #url跳转
 urls = (
-        '/', 'Index',
+        '/', 'IndexHandler',
         '/viewPost', 'ViewPost',
-        '/newPost', 'NewPost',
-        '/deletePost', 'DeletePost'
+        '/newPost', 'NewPostHandler',
+        '/deletePost', 'DeletePostHandler'
 )
+
+#数据库对象
+db = web.database(dbn='sqlite', db = 'MessageRecord.db')
 
 #form表单
 ##新留言表单
-newPostForm = form.Form(
-                        form.Textbox('Your Name'),
-                        form.Textarea('Message'),
-                        form.Button('Post it!')
+newPostForm = web.form.Form(
+                            web.form.Textbox('Your Name'),
+                            web.form.Textarea('Message'),
+                            web.form.Button('Post it!')
 )
 
-class Index:
+class IndexHandler:
     def GET(self):
-        post = newPostForm()
-        return render.index()
+        msgs = db.select('msg')
+        return render.index(msgs)
 
-class NewPost:
-    def GET(self):
-        post = newPostForm()
-        return render.newPost(post)
+class NewPostHandler:
+    def POST(self):
+        form = newPostForm()
+        return render.newPost(form)
 
 if __name__ == "__main__":
     app = web.application(urls, globals())

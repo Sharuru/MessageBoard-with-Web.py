@@ -1,4 +1,27 @@
-﻿This is the Homepage of the Message Board.<br>
-Use the Item below to switch Function: <br>
-<br><br><br>
-<input type="button" value="Leave Message" onclick="javascript:window.location.href='newPost'"> 
+﻿$def with (msgs)
+
+This is the Homepage of the Message Board.
+<br>
+<br>
+Here are ALL the Messages in Database:
+<br>
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>E-mail</th>
+        <th>Time</th>
+        <th>Message</th>
+    </tr>
+    $for record in msgs:
+    <tr>
+        <td>$record.name</td>
+        <td>$record.mail</td>
+        <td>这里等我写到写入数据库的时候再讲，你硬要输出的话就是: $record.time</td>
+        <td>$record.message</td>
+    </tr>
+</table>
+<br>
+<br>
+<br>
+You Can Leave NEW Message Here:
+<br>
