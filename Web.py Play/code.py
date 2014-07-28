@@ -33,17 +33,14 @@ class IndexHandler:
 
 class NewPostHandler:
     def POST(self):
+        msgs = db.select('msg')
         form = newPostForm()
         recvTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         if not form.validates():
-            print form.validators
-            return render.newPost(form, False, recvTime)
+            return render.index(msgs, form)
         else:
             db.insert('msg', name = form.d.username, mail = form.d.mail, time = recvTime, message = form.d.message)
-            return render.newPost(form, True, recvTime)
-            #return render.newPost(form)
-            #return web.seeother('/')
-            #return render.newPost(web.form.username)
+            return render.newPost()
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
