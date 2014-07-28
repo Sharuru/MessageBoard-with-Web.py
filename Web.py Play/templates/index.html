@@ -1,4 +1,4 @@
-﻿$def with (msgs)
+﻿$def with (msgs, form)
 
 This is the Homepage of the Message Board.
 <br>
@@ -25,3 +25,8 @@ Here are ALL the Messages in Database:
 <br>
 You Can Leave NEW Message Here:
 <br>
+<form action = "/newPost" method="POST">
+    $:form.render()
+</form>
+
+
