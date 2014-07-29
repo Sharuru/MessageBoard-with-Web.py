@@ -1,5 +1,10 @@
-$def with (msgs, form, delbutton)
-
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>HomePage</title>
+</head>
+<body>
 This is the Homepage of the Message Board.
 <br>
 <br>
@@ -13,18 +18,19 @@ Here are ALL the Messages in Database:
         <th>Message</th>
         <th>Function</th>
     </tr>
-    $for record in msgs:
+    {% for record in msgs %}
     <tr>
-        <td>$record.name</td>
-        <td>$record.mail</td>
-        <td>$record.time</td>
-        <td>$record.message</td>
+        <td>{{ record.name }}</td>
+        <td>{{ record.mail }}</td>
+        <td>{{ record.time }}</td>
+        <td>{{ record.message }}</td>
         <td>
-            <form action="/delPost-$record.message" method="POST">
-                $:delbutton.render()
+            <form action="/delPost-{{ record.message }}" method="POST">
+                {{ delbutton.render() }}
             </form>
         </td>
     </tr>
+    {% endfor %}
 </table>
 <br>
 <br>
@@ -32,5 +38,7 @@ Here are ALL the Messages in Database:
 You Can Leave NEW Message Here:
 <br>
 <form action="/newPost" method="POST">
-    $:form.render()
+    {{ form.render() }}
 </form>
+</body>
+</html>

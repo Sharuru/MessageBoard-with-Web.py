@@ -2,14 +2,28 @@ __author__ = 'Mave'
 
 import web
 import datetime
+import os
+from jinja2 import Environment, FileSystemLoader
 
-render = web.template.render('templates/')
+
+def render_template(template_name, **context):
+    extensions = context.pop('extensions', [])
+    globals = context.pop('globals', {})
+
+    jinja_env = Environment(
+        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
+        extensions=extensions,
+            )
+    jinja_env.globals.update(globals)
+
+    #jinja_env.update_template_context(context)
+    return jinja_env.get_template(template_name).render(context)
 
 #urlJump
 urls = (
     '/', 'IndexHandler',
     '/newPost', 'NewPostHandler',
-    '/delPost-(.*)', 'DeletePostHandler'
+    '/delPost-(.*)', 'DeletePostHandler',
 )
 
 #Database Object
@@ -39,7 +53,7 @@ class IndexHandler:
         msgs = db.select('msg')
         form = newPostForm()
         delbutton = delPostForm()
-        return render.index(msgs, form, delbutton)
+        return render_template('index.html', msgs=msgs, form=form, delbutton=delbutton)
 
 
 class NewPostHandler:
@@ -49,17 +63,16 @@ class NewPostHandler:
         receive = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         delbutton = delPostForm()
         if not form.validates():
-            return render.index(msgs, form, delbutton)
+            return render_template('index.html', msgs=msgs, form=form, delbutton=delbutton)
         else:
             db.insert('msg', name=form.d.username, mail=form.d.mail, time=receive, message=form.d.message)
-            return render.newPost()
+            return render_template('newPost.html')
 
 
 class DeletePostHandler:
     def POST(self, delmsg):
-        #msgs = db.select('msg')
         db.delete('msg', where='message=$message', vars={'message': delmsg})
-        return render.delPost()
+        return render_template('delPost.html')
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
