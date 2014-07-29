@@ -22,7 +22,8 @@ var/
 .installed.cfg
 *.egg
 .idea
-.db
+*.db
+MessageRecord.db
 
 # Installer logs
 pip-log.txt
