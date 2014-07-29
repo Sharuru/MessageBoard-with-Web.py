@@ -1,32 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-$def with (msgs, form)
+$def with (msgs, form, delbutton)
 
 This is the Homepage of the Message Board.
 <br>
 <br>
 Here are ALL the Messages in Database:
 <br>
-
-    $for record in msgs:
-    <table border="1">
-    <tbody><tr>
+<table border="1">
+    <tr>
         <th>Name</th>
         <th>E-mail</th>
         <th>Time</th>
         <th>Message</th>
-    </tr><tr>
+        <th>Function</th>
+    </tr>
+    $for record in msgs:
+    <tr>
         <td>$record.name</td>
         <td>$record.mail</td>
         <td>$record.time</td>
         <td>$record.message</td>
+        <td>
+            <form action="/delPost-$record.message" method="POST">
+                $:delbutton.render()
+            </form>
+        </td>
     </tr>
-</tbody></table>
+</table>
 <br>
 <br>
 <br>
@@ -35,5 +34,3 @@ You Can Leave NEW Message Here:
 <form action="/newPost" method="POST">
     $:form.render()
 </form>
-</body>
-</html>
