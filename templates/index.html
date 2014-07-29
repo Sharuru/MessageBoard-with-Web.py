@@ -1,32 +1,39 @@
-﻿$def with (msgs, form)
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+$def with (msgs, form)
 
 This is the Homepage of the Message Board.
 <br>
 <br>
 Here are ALL the Messages in Database:
 <br>
-<table border="1">
-    <tr>
+
+    $for record in msgs:
+    <table border="1">
+    <tbody><tr>
         <th>Name</th>
         <th>E-mail</th>
         <th>Time</th>
         <th>Message</th>
-    </tr>
-    $for record in msgs:
-    <tr>
+    </tr><tr>
         <td>$record.name</td>
         <td>$record.mail</td>
-        <td>这里等我写到写入数据库的时候再讲，你硬要输出的话就是: $record.time</td>
+        <td>$record.time</td>
         <td>$record.message</td>
     </tr>
-</table>
+</tbody></table>
 <br>
 <br>
 <br>
 You Can Leave NEW Message Here:
 <br>
-<form action = "/newPost" method="POST">
+<form action="/newPost" method="POST">
     $:form.render()
 </form>
-
-
+</body>
+</html>
