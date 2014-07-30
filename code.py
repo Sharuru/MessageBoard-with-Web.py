@@ -23,7 +23,7 @@ def render_template(template_name, **context):
 urls = (
     '/', 'IndexHandler',
     '/newPost', 'NewPostHandler',
-    '/delPost-(.*)', 'DeletePostHandler',
+    '/delPost/(.*)', 'DeletePostHandler',
     '/logIn', 'LogInHandler'
 )
 
@@ -94,7 +94,7 @@ class NewPostHandler:
 
 class DeletePostHandler:
     def POST(self, delmsg):
-        db.delete('msg', where='timestamp=$timestamp', vars={'timestamp': delmsg})
+        db.delete('msg', where='msgid=$msgid', vars={'msgid': delmsg})
         return render_template('delPost.html')
 
 class LogInHandler:
