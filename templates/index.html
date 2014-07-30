@@ -24,11 +24,15 @@ Here are ALL the Messages in Database:
         <td>{{ record.mail }}</td>
         <td>{{ record.time }}</td>
         <td>{{ record.message }}</td>
+        {% if manage == True %}
         <td>
-            <form action="/delPost-{{ record.message }}" method="POST">
+            <form action="/delPost-{{ record.timestamp }}" method="POST">
                 {{ delbutton.render() }}
             </form>
         </td>
+        {% else %}
+        <td>Please Login</td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>
@@ -39,6 +43,14 @@ You Can Leave NEW Message Here:
 <br>
 <form action="/newPost" method="POST">
     {{ form.render() }}
+</form>
+<br>
+<br>
+<br>
+Or, You can goto Login Page & DELETE messages.
+<br>
+<form action="/logIn" method="GET">
+    {{ loginbutton.render() }}
 </form>
 </body>
 </html>
