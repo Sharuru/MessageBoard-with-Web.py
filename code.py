@@ -1,15 +1,30 @@
 __author__ = 'Mave'
 
 import web
-import datetime
+import time
+import os
+from jinja2 import Environment, FileSystemLoader
 
-render = web.template.render('templates/')
+
+def render_template(template_name, **context):
+    extensions = context.pop('extensions', [])
+    globals = context.pop('globals', {})
+
+    jinja_env = Environment(
+        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
+        extensions=extensions,
+            )
+    jinja_env.globals.update(globals)
+
+    #jinja_env.update_template_context(context)
+    return jinja_env.get_template(template_name).render(context)
 
 #urlJump
 urls = (
     '/', 'IndexHandler',
     '/newPost', 'NewPostHandler',
-    '/delPost-(.*)', 'DeletePostHandler'
+    '/delPost', 'DeletePostHandler',
+    '/logIn', 'LogInHandler'
 )
 
 #Database Object
@@ -17,14 +32,12 @@ db = web.database(dbn='sqlite', db='MessageRecord.db')
 
 #form
 ##NewPostForm
-vname = web.form.regexp(r"\w{1,}", "Must Fill Your Name")
 vemail = web.form.regexp(r".*@.*", "Must be a VALID E-mail address!")
-vmessage = web.form.regexp(r"\w{1,}", "Must Fill Your Message")
 
 newPostForm = web.form.Form(
-    web.form.Textbox('username', vname, description='Your Name:'),
+    web.form.Textbox('username', description='Your Name:'),
     web.form.Textbox('mail', vemail, description='E-mail:'),
-    web.form.Textarea('message', vmessage, description='Message:'),
+    web.form.Textarea('message', description='Message:'),
     web.form.Button('Post it!')
 )
 
@@ -33,33 +46,78 @@ delPostForm = web.form.Form(
     web.form.Button('Delete This Message')
 )
 
+##LogInForm
+vadname = web.form.regexp(r"\w{1,}", "Must Fill Your Account")
+vadpass = web.form.regexp(r"\w{1,}", "Must Fill Your Password")
+
+logInForm = web.form.Form(
+    web.form.Textbox('adusername', vadname, description='Administrator:'),
+    web.form.Password('adpassword', vadpass, description='Password:'),
+    web.form.Button('login', html='Login'),
+)
+
+gotoLoginButton = web.form.Form(
+    web.form.Button('gotologin', html='Goto Login')
+)
+
 
 class IndexHandler:
     def GET(self):
         msgs = db.select('msg')
         form = newPostForm()
         delbutton = delPostForm()
-        return render.index(msgs, form, delbutton)
+        loginbutton = gotoLoginButton()
+        if web.cookies().get('isAdmin') == "Shimakaze,Go!":
+            return render_template(
+                'index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton, manage=True
+            )
+        else:
+            return render_template(
+                'index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton, manage=False
+            )
+
 
 
 class NewPostHandler:
     def POST(self):
         msgs = db.select('msg')
         form = newPostForm()
-        receive = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        receive = time.ctime()
         delbutton = delPostForm()
+        loginbutton = gotoLoginButton()
         if not form.validates():
-            return render.index(msgs, form, delbutton)
+            return render_template('index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton)
         else:
             db.insert('msg', name=form.d.username, mail=form.d.mail, time=receive, message=form.d.message)
-            return render.newPost()
+            return render_template('newPost.html')
 
 
 class DeletePostHandler:
-    def POST(self, delmsg):
-        #msgs = db.select('msg')
-        db.delete('msg', where='message=$message', vars={'message': delmsg})
-        return render.delPost()
+    def POST(self):
+        delmsg = web.input().id
+        db.delete('msg', where='msgid=$msgid', vars={'msgid': delmsg})
+        return render_template('delPost.html')
+
+class LogInHandler:
+    def GET(self):
+        loginform = logInForm()
+        return render_template('logIn.html', loginform=loginform, loginFlag=False)
+    def POST(self):
+        loginform = logInForm()
+        if not loginform.validates():
+            return render_template('logIn.html', loginform=loginform)
+        else:
+            logcheck = db.select('admin')
+            for record in logcheck:
+                if loginform.d.adusername == record.adusername:
+                    if loginform.d.adpassword == record.adpassword:
+                        web.setcookie('isAdmin', "Shimakaze,Go!", 1800)
+                        return render_template(
+                            'logIn.html', loginform=loginform, loginFlag=True)
+                    else:
+                        return render_template('logIn.html', loginform=loginform, loginFlag=False)
+                else:
+                    return render_template('logIn.html', loginform=loginform, loginFlag=False)
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
