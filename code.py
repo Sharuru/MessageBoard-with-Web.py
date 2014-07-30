@@ -23,7 +23,7 @@ def render_template(template_name, **context):
 urls = (
     '/', 'IndexHandler',
     '/newPost', 'NewPostHandler',
-    '/delPost/(.*)', 'DeletePostHandler',
+    '/delPost', 'DeletePostHandler',
     '/logIn', 'LogInHandler'
 )
 
@@ -60,13 +60,6 @@ gotoLoginButton = web.form.Form(
     web.form.Button('gotologin', html='Goto Login')
 )
 
-manage = False
-
-
-def permission():
-    global manage
-    manage = True
-
 
 class IndexHandler:
     def GET(self):
@@ -74,7 +67,15 @@ class IndexHandler:
         form = newPostForm()
         delbutton = delPostForm()
         loginbutton = gotoLoginButton()
-        return render_template('index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton, manage=manage)
+        if web.cookies().get('isAdmin') == "Shimakaze,Go!":
+            return render_template(
+                'index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton, manage=True
+            )
+        else:
+            return render_template(
+                'index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton, manage=False
+            )
+
 
 
 class NewPostHandler:
@@ -82,18 +83,18 @@ class NewPostHandler:
         msgs = db.select('msg')
         form = newPostForm()
         receive = time.ctime()
-        timestamp = time.time()
         delbutton = delPostForm()
         loginbutton = gotoLoginButton()
         if not form.validates():
             return render_template('index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton)
         else:
-            db.insert('msg', name=form.d.username, mail=form.d.mail, time=receive, message=form.d.message, timestamp=timestamp)
+            db.insert('msg', name=form.d.username, mail=form.d.mail, time=receive, message=form.d.message)
             return render_template('newPost.html')
 
 
 class DeletePostHandler:
-    def POST(self, delmsg):
+    def POST(self):
+        delmsg = web.input().id
         db.delete('msg', where='msgid=$msgid', vars={'msgid': delmsg})
         return render_template('delPost.html')
 
@@ -110,7 +111,7 @@ class LogInHandler:
             for record in logcheck:
                 if loginform.d.adusername == record.adusername:
                     if loginform.d.adpassword == record.adpassword:
-                        permission()
+                        web.setcookie('isAdmin', "Shimakaze,Go!", 1800)
                         return render_template(
                             'logIn.html', loginform=loginform, loginFlag=True)
                     else:

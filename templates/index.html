@@ -26,8 +26,9 @@ Here are ALL the Messages in Database:
         <td>{{ record.message }}</td>
         {% if manage == True %}
         <td>
-            <form action="/delPost/{{ record.msgid }}" method="POST">
-                {{ delbutton.render() }}
+            <form action="/delPost" method="POST">
+            <input type="hidden" value="{{ record.msgid }}" name="id">
+            <input type="submit" value="DELETE this Message">
             </form>
         </td>
         {% else %}
