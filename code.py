@@ -66,16 +66,11 @@ class IndexHandler:
         msgs = db.select('msg')
         form = newPostForm()
         delbutton = delPostForm()
-        loginbutton = gotoLoginButton()
-        if web.cookies().get('isAdmin') == "Shimakaze,Go!":
-            return render_template(
-                'index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton, manage=True
-            )
-        else:
-            return render_template(
-                'index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton, manage=False
-            )
+        # loginbutton = gotoLoginButton()
 
+        # only remove `loginbutton`
+        return render_template('index.html', msgs=msgs, form=form, delbutton=delbutton,
+                               manage=web.cookies().get('isAdmin') == "Shimakaze,Go!")  # pythonic
 
 
 class NewPostHandler:

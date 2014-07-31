@@ -69,8 +69,11 @@
         Or, You can goto Login Page & DELETE messages.
         <br>
 
-        <form action="/logIn" method="GET">
-            {{ loginbutton.render() }}
+        <form action="/logIn" method="POST">
+            <!-- name 和 logInForm 的 field 是对应的 -->
+            <input type="text" name="adusername" placeholder="Username">
+            <input type="password" name="adpassword" placeholder="Password">
+            <input type="submit" value="Login">
         </form>
     </div>
 
