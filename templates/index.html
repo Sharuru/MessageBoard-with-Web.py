@@ -2,56 +2,78 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>HomePage</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A MessageBoard with web.py and Bootstrap">
+    <meta name="author" content="Mave & Very thanks to Ricter">
+    <link rel="icon" href="/static/favicon.ico">
+    <title>MessageBoard - HomePage</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/static/index.css" rel="stylesheet">
+    <link href="/static/yue.css" rel="stylesheet">
+    <link href="/static/signin.css" rel="stylesheet">
+    <style type="text/css"></style>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/static/html5shiv.min.js"></script>
+      <script src="/static/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
-This is the Homepage of the Message Board.
-<br>
-<br>
-Here are ALL the Messages in Database:
-<br>
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>E-mail</th>
-        <th>Time</th>
-        <th>Message</th>
-        <th>Function</th>
-    </tr>
-    {% for record in msgs %}
-    <tr>
-        <td>{{ record.name }}</td>
-        <td>{{ record.mail }}</td>
-        <td>{{ record.time }}</td>
-        <td>{{ record.message }}</td>
-        {% if manage == True %}
-        <td>
-            <form action="/delPost" method="POST">
-            <input type="hidden" value="{{ record.msgid }}" name="id">
-            <input type="submit" value="DELETE this Message">
-            </form>
-        </td>
-        {% else %}
-        <td>Please Login</td>
-        {% endif %}
-    </tr>
-    {% endfor %}
-</table>
-<br>
-<br>
-<br>
-You Can Leave NEW Message Here:
-<br>
-<form action="/newPost" method="POST">
-    {{ form.render() }}
-</form>
-<br>
-<br>
-<br>
-Or, You can goto Login Page & DELETE messages.
-<br>
-<form action="/logIn" method="GET">
-    {{ loginbutton.render() }}
-</form>
+<div class ="container">
+    <div class="title">
+        <h1 id = "title">&nbsp;<strong>MessageBoard</strong><span class="badge">Alpha</span>&nbsp;&nbsp;<small>Homepage</small></h1>
+        <h4>&nbsp;&nbsp;<em>With web.py, Jinja2 and BootStrap</em></h4>
+    </div>
+    <div class="message">
+        <h4>Here are ALL the Messages in Database:</h4>
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>E-mail</th>
+                <th>Time</th>
+                <th>Message</th>
+                {% if manage == True %}
+                <th>Function</th>
+                {% endif %}
+            </tr>
+            {% for record in msgs %}
+            <tr>
+                <td>{{ record.name }}</td>
+                <td>{{ record.mail }}</td>
+                <td>{{ record.time }}</td>
+                <td>{{ record.message }}</td>
+                {% if manage == True %}
+                <td>
+                    <form action="/delPost" method="POST">
+                    <input type="hidden" value="{{ record.msgid }}" name="id">
+                    <input type="submit" value="DELETE this Message">
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="newmessage">
+        <h5>&nbsp;&nbsp;You Can Leave NEW Message Here:</h5>
+    </div>
+        <form action="/newPost" method="POST">
+            {{ form.render() }}
+        </form>
+        <br>
+        <br>
+        <br>
+        Or, You can goto Login Page & DELETE messages.
+        <br>
+
+        <form action="/logIn" method="GET">
+            {{ loginbutton.render() }}
+        </form>
+    </div>
+
+</div>
 </body>
 </html>

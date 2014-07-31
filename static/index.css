@@ -1,0 +1,25 @@
+div{
+}
+body{
+ font-family: "Microsoft Yahei","SimHei",sans-serif;
+}
+textarea{
+resize: none;
+}
+textbox{
+margin-left:20px;
+}
+
+.title{
+margin-top: 120px;
+color: #000000;
+line-height: 55;
+box-shadow:-5px 0px black;
+}
+.message{
+margin-left:12px;
+margin-top:20px;
+}
+.newmessage{
+box-shadow:-5px 0px black;
+}
