@@ -12,6 +12,8 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/static/index.css" rel="stylesheet">
+    <link href="/static/yue.css" rel="stylesheet">
+    <link href="/static/signin.css" rel="stylesheet">
     <style type="text/css"></style>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -22,13 +24,12 @@
 <body>
 <div class ="container">
     <div class="title">
-        <h1 id = "title"><strong>MessageBoard</strong> <small>Homepage</small></h1>
-        <h4><em>With web.py, Jinja2 and BootStrap</em></h4>
-        <hr align=left width=684>
+        <h1 id = "title">&nbsp;<strong>MessageBoard</strong><span class="badge">Alpha</span>&nbsp;&nbsp;<small>Homepage</small></h1>
+        <h4>&nbsp;&nbsp;<em>With web.py, Jinja2 and BootStrap</em></h4>
     </div>
     <div class="message">
-        Here are ALL the Messages in Database:
-        <table class="table table-hover">
+        <h4>Here are ALL the Messages in Database:</h4>
+        <table class="table table-striped">
             <tr>
                 <th>Name</th>
                 <th>E-mail</th>
@@ -55,11 +56,10 @@
             </tr>
             {% endfor %}
         </table>
-        <br>
-        <br>
-        <br>
-        You Can Leave NEW Message Here:
-        <br>
+    </div>
+    <div class="newmessage">
+        <h5>&nbsp;&nbsp;You Can Leave NEW Message Here:</h5>
+    </div>
         <form action="/newPost" method="POST">
             {{ form.render() }}
         </form>
@@ -68,6 +68,7 @@
         <br>
         Or, You can goto Login Page & DELETE messages.
         <br>
+
         <form action="/logIn" method="GET">
             {{ loginbutton.render() }}
         </form>

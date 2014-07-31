@@ -35,9 +35,9 @@ db = web.database(dbn='sqlite', db='MessageRecord.db')
 vemail = web.form.regexp(r".*@.*", "Must be a VALID E-mail address!")
 
 newPostForm = web.form.Form(
-    web.form.Textbox('username', description='Your Name:'),
-    web.form.Textbox('mail', vemail, description='E-mail:'),
-    web.form.Textarea('message', description='Message:'),
+    web.form.Textbox('username', description='Your Name:', class_='input'),
+    web.form.Textbox('mail', vemail, description='E-mail:', class_='input'),
+    web.form.Textarea('message', description='Message:', class_='input'),
     web.form.Button('Post it!')
 )
 
