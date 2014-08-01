@@ -20,12 +20,14 @@ line-height: 55;
 box-shadow:-5px 0px black;
 }
 .message{
-
 margin-top:20px;
 }
 .new-message-title{
 box-shadow:-5px 0px black;
 }
 .new-message-form{
+margin-left:10px;
+}
+.input-alert{
 margin-left:10px;
 }

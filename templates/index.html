@@ -10,7 +10,6 @@
     <title>MessageBoard - HomePage</title>
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/static/index.css" rel="stylesheet">
     <style type="text/css"></style>
@@ -25,12 +24,10 @@
 <body>
 <div class="container">
     <div class="title">
-        <button type="button" class="btn btn-default tooltip-btn" data-toggle="tooltip" data-placement="right" title="Baka Mave www">Tooltip on <del>left</del>Right</button>
         <h1 id = "title">&nbsp;<strong>MessageBoard</strong><span class="badge">Alpha</span>&nbsp;&nbsp;<small>Homepage</small></h1>
         <h4>&nbsp;&nbsp;<em>With web.py, Jinja2 and BootStrap</em></h4>
     </div>
     <div class="message">
-        <br>
         <h4>Here are ALL the Messages in Database:</h4>
         <table class="table table-striped">
             <tr>
@@ -52,7 +49,7 @@
                 <td>
                     <form action="/delPost" method="POST">
                     <input type="hidden" value="{{ record.msgid }}" name="id">
-                    <input type="submit" value="DELETE this Message">
+                    <button type="submit" class="btn btn-danger">Delete THIS Message</button>
                     </form>
                 </td>
                 {% endif %}
@@ -65,36 +62,40 @@
     </div>
     {% if is_input_legal == False %}
     <div class="input-alert">
+        <h3><p class="bg-danger">Opps...It seems like you input something wrong :(</p></h3>
     </div>
     {% endif %}
     <div class="new-message-form">
         <form action="/newPost" method="POST">
             <label>Your Name:</label>
-            <input type="text" class="form-control" name = "username" data-toggle="tooltip" data-placement="left" title="Tooltip on left">
+            <input type="text" class="form-control" name = "username">
             <label>E-mail:</label>
-            <input type="text" class="form-control" name = "mail">
+            <input type="text" class="form-control tooltip-mail" data-toggle="tooltip" data-placement="left" title="Something like Jack@smith.com" name = "mail">
             <label>Message:</label>
             <textarea class="form-control" rows="3" name="message"></textarea>
             <br>
             <button type="submit" class="btn btn-success">Post it!</button>
         </form>
     </div>
-        <br>
-        <br>
-        <br>
-        Or, You can goto Login Page & DELETE messages.
-        <br>
-        <form action="/logIn" method="POST">
-            <!-- name 和 logInForm 的 field 是对应的 -->
-            <input type="text" name="adusername" placeholder="Username">
-            <input type="password" name="adpassword" placeholder="Password">
-            <input type="submit" value="Login">
+    <br>
+    <div class="new-message-title">
+        <h5>&nbsp;&nbsp;Or Login & Manage Messages:</h5>
+    </div>
+    <div class="new-message-form">
+        <form class="form-inline" action="/logIn" method="POST">
+            <input type="text" class="form-control" name="adusername" placeholder="Username">
+            <input type="password" class="form-control" name="adpassword" placeholder="Password">
+            <button type="submit" class="btn btn-default">Login</button>
         </form>
     </div>
-
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 </div>
 <script>
-    $(".tooltip-btn").hover(function(){
+    $(".tooltip-mail").focus(function(){
         $(this).tooltip("show");
     })
 </script>

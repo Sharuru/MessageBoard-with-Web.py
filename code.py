@@ -94,24 +94,24 @@ class DeletePostHandler:
 
 class LogInHandler:
     def GET(self):
-        login_form = logInForm()
-        return render_template('logIn.html', loginform=login_form, loginFlag=False)
+        return render_template('logIn.html', loginFlag=False)
+
     def POST(self):
         login_form = logInForm()
         if not login_form.validates():
-            return render_template('logIn.html', loginform=login_form)
+            return render_template('logIn.html', loginFlag=False)
         else:
             log_check = db.select('admin')
-            for record in logcheck:
+            for record in log_check:
                 if login_form.d.adusername == record.adusername:
                     if login_form.d.adpassword == record.adpassword:
                         web.setcookie('isAdmin', "Shimakaze,Go!", 1800)
                         return render_template(
-                            'logIn.html', loginform=login_form, loginFlag=True)
+                            'logIn.html', loginFlag=True)
                     else:
-                        return render_template('logIn.html', loginform=login_form, loginFlag=False)
+                        return render_template('logIn.html', loginFlag=False)
                 else:
-                    return render_template('logIn.html', loginform=login_form, loginFlag=False)
+                    return render_template('logIn.html', loginFlag=False)
 
 if __name__ == "__main__":
     app = web.application(urls, globals())

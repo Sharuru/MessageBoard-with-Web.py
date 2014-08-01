@@ -2,24 +2,18 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Administrator</title>
+    <title>Login Status</title>
+    <link href="/static/index.css" rel="stylesheet">
 </head>
 <body>
-Hi, Please Enter your Administrator Account Info to Login:
-<br>
-<form action="/logIn" method="POST">
-{{ loginform.render() }}
-</form>
-<br>
 Login Status:
 {% if loginFlag == True %}
-Confirm<br>
-You can DELETE NOW
-Back to HomePage in 1 Sec
-<br><br>
-<meta http-equiv="refresh" content="1;url=/">
+Success!<br>
 {% else %}
-Failed<br>
+Failed!<br>
 {% endif %}
+<br><br>
+Back to HomePage in 1 Sec
+<meta http-equiv="refresh" content="1;url=/">
 </body>
 </html>
