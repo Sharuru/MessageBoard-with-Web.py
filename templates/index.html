@@ -24,7 +24,7 @@
 <body>
 <div class="container">
     <div class="title">
-        <h1 id = "title">&nbsp;<strong>MessageBoard</strong><span class="badge">Alpha</span>&nbsp;&nbsp;<small>Homepage</small></h1>
+        <h1 id = "title">&nbsp;<strong>MessageBoard</strong><span class="badge">Perhaps Beta ;P</span>&nbsp;&nbsp;<small>Homepage</small></h1>
         <h4>&nbsp;&nbsp;<em>With web.py, Jinja2 and BootStrap</em></h4>
     </div>
     <div class="message">
@@ -82,12 +82,16 @@
         <h5>&nbsp;&nbsp;Or Login & Manage Messages:</h5>
     </div>
     <div class="new-message-form">
+    {% if manage == True %}
+        <h5>You have already Logged in.</h5>
+    {% else %}
         <form class="form-inline" action="/logIn" method="POST">
             <input type="text" class="form-control" name="adusername" placeholder="Username">
             <input type="password" class="form-control" name="adpassword" placeholder="Password">
             <button type="submit" class="btn btn-default">Login</button>
         </form>
     </div>
+    {% endif %}
     <br>
     <br>
     <br>
