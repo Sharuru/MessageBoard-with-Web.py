@@ -9,17 +9,23 @@ resize: none;
 textbox{
 margin-left:20px;
 }
-
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
 .title{
-margin-top: 120px;
+margin-top: 100px;
 color: #000000;
 line-height: 55;
 box-shadow:-5px 0px black;
 }
 .message{
-margin-left:12px;
+
 margin-top:20px;
 }
-.newmessage{
+.new-message-title{
 box-shadow:-5px 0px black;
+}
+.new-message-form{
+margin-left:10px;
 }

@@ -65,11 +65,8 @@ class IndexHandler:
     def GET(self):
         msgs = db.select('msg')
         form = newPostForm()
-        delbutton = delPostForm()
-        # loginbutton = gotoLoginButton()
-
-        # only remove `loginbutton`
-        return render_template('index.html', msgs=msgs, form=form, delbutton=delbutton,
+        del_button = delPostForm()
+        return render_template('index.html', msgs=msgs, form=form, delbutton=del_button,
                                manage=web.cookies().get('isAdmin') == "Shimakaze,Go!")  # pythonic
 
 
@@ -78,10 +75,12 @@ class NewPostHandler:
         msgs = db.select('msg')
         form = newPostForm()
         receive = time.ctime()
-        delbutton = delPostForm()
-        loginbutton = gotoLoginButton()
+        del_button = delPostForm()
+        login_button = gotoLoginButton()
         if not form.validates():
-            return render_template('index.html', msgs=msgs, form=form, delbutton=delbutton, loginbutton=loginbutton)
+            return render_template(
+                'index.html', msgs=msgs, form=form, delbutton=del_button, loginbutton=login_button, is_input_legal=False
+            )
         else:
             db.insert('msg', name=form.d.username, mail=form.d.mail, time=receive, message=form.d.message)
             return render_template('newPost.html')
@@ -95,24 +94,24 @@ class DeletePostHandler:
 
 class LogInHandler:
     def GET(self):
-        loginform = logInForm()
-        return render_template('logIn.html', loginform=loginform, loginFlag=False)
+        login_form = logInForm()
+        return render_template('logIn.html', loginform=login_form, loginFlag=False)
     def POST(self):
-        loginform = logInForm()
-        if not loginform.validates():
-            return render_template('logIn.html', loginform=loginform)
+        login_form = logInForm()
+        if not login_form.validates():
+            return render_template('logIn.html', loginform=login_form)
         else:
-            logcheck = db.select('admin')
+            log_check = db.select('admin')
             for record in logcheck:
-                if loginform.d.adusername == record.adusername:
-                    if loginform.d.adpassword == record.adpassword:
+                if login_form.d.adusername == record.adusername:
+                    if login_form.d.adpassword == record.adpassword:
                         web.setcookie('isAdmin', "Shimakaze,Go!", 1800)
                         return render_template(
-                            'logIn.html', loginform=loginform, loginFlag=True)
+                            'logIn.html', loginform=login_form, loginFlag=True)
                     else:
-                        return render_template('logIn.html', loginform=loginform, loginFlag=False)
+                        return render_template('logIn.html', loginform=login_form, loginFlag=False)
                 else:
-                    return render_template('logIn.html', loginform=loginform, loginFlag=False)
+                    return render_template('logIn.html', loginform=login_form, loginFlag=False)
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
