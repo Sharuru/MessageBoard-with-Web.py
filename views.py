@@ -5,7 +5,7 @@ from time import ctime
 from web import input, setcookie, cookies
 from jinja2 import Environment, FileSystemLoader
 from form import newPostForm, logInForm
-from models import select_table, insert_in_msg, delete_in_msg
+from models import insert_in_msg, delete_in_msg, session, Msg, Admin
 
 
 def render_template(template_name, **context):
@@ -22,7 +22,7 @@ def render_template(template_name, **context):
 
 class IndexHandler:
     def GET(self):
-        msgs = select_table('msg')
+        msgs = session.query(Msg).all()
         message_form = newPostForm()
         return render_template('index.html', msgs=msgs, form=message_form,
                                manage=cookies().get('isAdmin') == "Shimakaze,Go!")
@@ -34,7 +34,7 @@ class IndexHandler:
 
 class NewPostHandler:
     def POST(self):
-        msgs = select_table('msg')
+        msgs = session.query(Msg).all()
         message_form = newPostForm()
         receive_time = ctime()
         if not message_form.validates():
@@ -60,10 +60,10 @@ class LogInHandler:
         if not login_form.validates():
             return render_template('logIn.html', loginFlag=False)
         else:
-            log_check = select_table('admin')
+            log_check = session.query(Admin).all()
             for record in log_check:
-                if login_form.d.admin_name == record.adusername:
-                    if login_form.d.admin_pass == record.adpassword:
+                if login_form.d.admin_name == record.admin_name:
+                    if login_form.d.admin_pass == record.admin_pass:
                         setcookie('isAdmin', "Shimakaze,Go!", 1800)
                         return render_template('logIn.html', loginFlag=True)
                     else:
