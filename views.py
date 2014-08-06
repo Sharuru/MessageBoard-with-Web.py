@@ -25,8 +25,11 @@ class IndexHandler:
         msgs = models.select_table('msg')
         message_form = form.newPostForm()
         return render_template('index.html', msgs=msgs, form=message_form,
-                               manage=web.cookies().get('isAdmin') == "Shimakaze,Go!"
-        )
+                               manage=web.cookies().get('isAdmin') == "Shimakaze,Go!")
+
+    def POST(self):
+        web.setcookie('isAdmin', "", 1800)
+        return render_template('logIn.html', loginFlag='Logout')
 
 
 class NewPostHandler:

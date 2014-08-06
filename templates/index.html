@@ -87,7 +87,9 @@
     </div>
     <div class="new-message-form">
     {% if manage == True %}
-        <h5>You have already Logged in.</h5>
+       <form action="/" method="POST">
+            <button type="submit" class="btn btn-danger">Logout</button>
+       </form>
     {% else %}
         <form class="form-inline" action="/logIn" method="POST">
             <input type="text" class="form-control" name="admin_name" placeholder="Username">
