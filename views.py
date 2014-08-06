@@ -5,7 +5,7 @@ from time import ctime
 from web import input, setcookie, cookies
 from jinja2 import Environment, FileSystemLoader
 from form import newPostForm, logInForm
-from models import Msg, Admin
+from models import Msg, Admin, session
 import web
 
 def render_template(template_name, **context):
@@ -22,7 +22,7 @@ def render_template(template_name, **context):
 
 class IndexHandler:
     def GET(self):
-        msgs = web.ctx.orm.query(Msg).all()
+        msgs = session.query(Msg).all()
         message_form = newPostForm()
         return render_template('index.html', msgs=msgs, form=message_form,
                                manage=cookies().get('isAdmin') == "Shimakaze,Go!")
@@ -42,7 +42,7 @@ class NewPostHandler:
         else:
             new_msg = Msg(name=message_form.d.username, mail=message_form.d.mail, time=receive_time,
                           message=message_form.d.message)
-            session.add(new_msg)
+            web.ctx.orm.add(new_msg)
             return render_template('newPost.html')
 
 
