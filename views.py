@@ -6,7 +6,7 @@ from web import input, setcookie, cookies
 from jinja2 import Environment, FileSystemLoader
 from form import newPostForm, logInForm
 from models import Msg, Admin, session
-import web
+
 
 def render_template(template_name, **context):
     extensions = context.pop('extensions', [])
@@ -34,7 +34,7 @@ class IndexHandler:
 
 class NewPostHandler:
     def POST(self):
-        msgs = web.ctx.ormquery(Msg).all()
+        msgs = session.query(Msg).all()
         message_form = newPostForm()
         receive_time = ctime()
         if not message_form.validates():
@@ -42,14 +42,14 @@ class NewPostHandler:
         else:
             new_msg = Msg(name=message_form.d.username, mail=message_form.d.mail, time=receive_time,
                           message=message_form.d.message)
-            web.ctx.orm.add(new_msg)
+            session.add(new_msg)
             return render_template('newPost.html')
 
 
 class DeletePostHandler:
     def POST(self):
-        del_msg = web.ctx.orm.query(Msg).filter(Msg.msgid == input().id).one()
-        web.ctx.orm.delete(del_msg)
+        del_msg = session.query(Msg).filter(Msg.msgid == input().id).one()
+        session.delete(del_msg)
         return render_template('delPost.html')
 
 
@@ -59,7 +59,7 @@ class LogInHandler:
         if not login_form.validates():
             return render_template('logIn.html', loginFlag=False)
         else:
-            log_check = web.ctx.orm.query(Admin).all()
+            log_check = session.query(Admin).all()
             for record in log_check:
                 if login_form.d.admin_name == record.admin_name:
                     if login_form.d.admin_pass == record.admin_pass:
