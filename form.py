@@ -28,7 +28,3 @@ logInForm = form.Form(
     form.Password('admin_pass', admin_pass_verify, description='Password:'),
     form.Button('login', html='Login'),
 )
-
-gotoLoginButton = form.Form(
-    form.Button('gotologin', html='Goto Login')
-)
