@@ -15,6 +15,7 @@ def render_template(template_name, **context):
     jinja_env = Environment(
         loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
         extensions=extensions,
+        autoescape=True
     )
     jinja_env.globals.update(globals)
 
