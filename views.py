@@ -47,7 +47,9 @@ class NewPostHandler:
 class DeletePostHandler:
     def POST(self):
         msgid = input().id
-        delete_in_msg(msgid)
+        #delete_in_msg(msgid)
+        msg = session.query(Msg).filter(Msg.id == msgid).one()
+        session.orm.delete(msg)
         return render_template('delPost.html')
 
 
