@@ -29,20 +29,4 @@ class Admin(Base):
     admin_name = Column(String, unique=True)
     admin_pass = Column(String)
 
-
 Base.metadata.create_all(engine)
-
-
-def insert_in_msg(name, mail, time, message):
-    new_msg = Msg(name=name, mail=mail, time=time, message=message)
-    session.add(new_msg)
-    session.commit()
-    #return database.insert('msg', name=name, mail=mail, time=time, message=message)
-    return True
-
-
-def delete_in_msg(msgid):
-    msgggg = Msg(msgid=msgid)
-    session.delete(msgggg)
-    return True
-    #return database.delete('msg', where='msgid=$msgid', vars={'msgid': msgid})

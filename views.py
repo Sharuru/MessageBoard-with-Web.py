@@ -5,7 +5,7 @@ from time import ctime
 from web import input, setcookie, cookies
 from jinja2 import Environment, FileSystemLoader
 from form import newPostForm, logInForm
-from models import insert_in_msg, delete_in_msg, session, Msg, Admin
+from models import session, Msg, Admin
 
 
 def render_template(template_name, **context):
@@ -40,14 +40,15 @@ class NewPostHandler:
         if not message_form.validates():
             return render_template('index.html', msgs=msgs, form=message_form, is_input_legal=False)
         else:
-            insert_in_msg(message_form.d.username, message_form.d.mail, receive_time, message_form.d.message)
+            new_msg = Msg(name=newPostForm.d.name, mail=newPostForm.d.mail, time=receive_time,
+                          message=newPostForm.d.message)
+            session.add(new_msg)
             return render_template('newPost.html')
 
 
 class DeletePostHandler:
     def POST(self):
         msgid = input().id
-        #delete_in_msg(msgid)
         msg = session.query(Msg).filter(Msg.id == msgid).one()
         session.orm.delete(msg)
         return render_template('delPost.html')
