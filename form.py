@@ -14,11 +14,6 @@ newPostForm = form.Form(
     form.Button('Post it!')
 )
 
-##DelPostForm
-delPostForm = form.Form(
-    form.Button('Delete This Message')
-)
-
 ##LogInForm
 admin_name_verify = form.regexp(r"\w{1,}", "Must Fill Your Account")
 admin_pass_verify = form.regexp(r"\w{1,}", "Must Fill Your Password")
