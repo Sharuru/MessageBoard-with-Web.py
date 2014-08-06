@@ -43,6 +43,7 @@ class NewPostHandler:
             new_msg = Msg(name=message_form.d.username, mail=message_form.d.mail, time=receive_time,
                           message=message_form.d.message)
             session.add(new_msg)
+            session.commit()
             return render_template('newPost.html')
 
 
