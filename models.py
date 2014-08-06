@@ -11,8 +11,7 @@ def select_table(table):
 
 
 def insert_in_msg(name, mail, time, message):
-    database.insert('msg', name=name, mail=mail, time=time, message=message)
-    return True
+    return database.insert('msg', name=name, mail=mail, time=time, message=message)
 
 
 def delete_in_msg(msgid):
