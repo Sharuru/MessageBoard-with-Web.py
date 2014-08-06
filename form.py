@@ -2,7 +2,7 @@ __author__ = 'Mave'
 
 from web import form
 
-#All form in system should be set here
+#All FORM in system should be set here
 
 ##NewPostForm
 email_verify = form.regexp(r".*@.*", "Must be a VALID E-mail address!")
