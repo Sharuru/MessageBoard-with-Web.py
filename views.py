@@ -5,8 +5,8 @@ from time import ctime
 from web import input, setcookie, cookies
 from jinja2 import Environment, FileSystemLoader
 from form import newPostForm, logInForm
-from models import session, Msg, Admin
-
+from models import Msg, Admin
+import web
 
 def render_template(template_name, **context):
     extensions = context.pop('extensions', [])
@@ -22,7 +22,7 @@ def render_template(template_name, **context):
 
 class IndexHandler:
     def GET(self):
-        msgs = session.query(Msg).all()
+        msgs = web.ctx.orm.query(Msg).all()
         message_form = newPostForm()
         return render_template('index.html', msgs=msgs, form=message_form,
                                manage=cookies().get('isAdmin') == "Shimakaze,Go!")
@@ -34,36 +34,32 @@ class IndexHandler:
 
 class NewPostHandler:
     def POST(self):
-        msgs = session.query(Msg).all()
+        msgs = web.ctx.ormquery(Msg).all()
         message_form = newPostForm()
         receive_time = ctime()
         if not message_form.validates():
             return render_template('index.html', msgs=msgs, form=message_form, is_input_legal=False)
         else:
-            new_msg = Msg(name=newPostForm.d.name, mail=newPostForm.d.mail, time=receive_time,
-                          message=newPostForm.d.message)
+            new_msg = Msg(name=message_form.d.username, mail=message_form.d.mail, time=receive_time,
+                          message=message_form.d.message)
             session.add(new_msg)
             return render_template('newPost.html')
 
 
 class DeletePostHandler:
     def POST(self):
-        msgid = input().id
-        msg = session.query(Msg).filter(Msg.id == msgid).one()
-        session.orm.delete(msg)
+        del_msg = web.ctx.orm.query(Msg).filter(Msg.msgid == input().id).one()
+        web.ctx.orm.delete(del_msg)
         return render_template('delPost.html')
 
 
 class LogInHandler:
-    def GET(self):
-        return render_template('logIn.html', loginFlag=False)
-
     def POST(self):
         login_form = logInForm()
         if not login_form.validates():
             return render_template('logIn.html', loginFlag=False)
         else:
-            log_check = session.query(Admin).all()
+            log_check = web.ctx.orm.query(Admin).all()
             for record in log_check:
                 if login_form.d.admin_name == record.admin_name:
                     if login_form.d.admin_pass == record.admin_pass:

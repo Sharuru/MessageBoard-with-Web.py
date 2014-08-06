@@ -1,14 +1,13 @@
 __author__ = 'Mave'
 
-from web import db
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import sessionmaker
 
 #Database Object
-database = db.database(dbn='sqlite', db='MessageRecord.db')
-engine = create_engine('sqlite:///MessageRecordv2.db', echo=True)
+engine = create_engine('sqlite:///MessageRecordv2.db')
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
