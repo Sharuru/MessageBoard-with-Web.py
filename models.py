@@ -4,20 +4,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import *
 
 #Database Object
 engine = create_engine('sqlite:///MessageRecordv2.db', connect_args={'check_same_thread': False})
 Base = declarative_base()
-#meta = MetaData()
-#meta.bind = engine
 Session = sessionmaker(bind=engine)
 session = Session()
 
 
 class Msg(Base):
     __tablename__ = 'msg'
-    #__table__ = Table('msg', meta, autoload=True)
     msgid = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     mail = Column(String)
