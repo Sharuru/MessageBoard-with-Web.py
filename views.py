@@ -43,8 +43,7 @@ class NewPostHandler:
             new_msg = Msg(name=message_form.d.username, mail=message_form.d.mail, time=receive_time,
                           message=message_form.d.message)
             ctx.orm.add(new_msg)
-            ctx.orm.commit()
-            return render_template('newPost.html')
+        return render_template('newPost.html')
 
 
 class DeletePostHandler:

@@ -2,10 +2,12 @@ __author__ = 'Mave'
 
 import web
 from sqlalchemy.orm import scoped_session
-
 import urls
 from views import *
 from models import sessionmaker, engine
+
+
+reload(__import__('sys')).setdefaultencoding('utf-8')
 
 
 def load_sqla(handler):
@@ -24,7 +26,6 @@ def load_sqla(handler):
 
 app = web.application(urls.urls, globals())
 app.add_processor(load_sqla)
-
 application = app.wsgifunc()
 
 if __name__ == "__main__":
