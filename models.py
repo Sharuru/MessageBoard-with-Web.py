@@ -7,8 +7,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 
 #Database Object
-#engine = create_engine('sqlite:///MessageRecord.db', connect_args={'check_same_thread': False})
-engine = create_engine('mysql+mysqldb://username:password@localhost/database_name')
+engine = create_engine('mysql+mysqldb://username:password@localhost/table_named?charset=utf8')
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
