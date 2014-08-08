@@ -1,11 +1,31 @@
 __author__ = 'Mave'
 
-from web import application
+import web
+from sqlalchemy.orm import scoped_session
+
 import urls
 from views import *
+from models import sessionmaker, engine
 
-#application = application(urls.urls, globals()).wsgifunc()
+
+def load_sqla(handler):
+    web.ctx.orm = scoped_session(sessionmaker(bind=engine))
+    try:
+        return handler()
+    except web.HTTPError:
+       web.ctx.orm.commit()
+       raise
+    except:
+        web.ctx.orm.rollback()
+        raise
+    finally:
+        web.ctx.orm.commit()
+
+
+app = web.application(urls.urls, globals())
+app.add_processor(load_sqla)
+
+application = app.wsgifunc()
 
 if __name__ == "__main__":
-    app = application(urls.urls, globals())
     app.run()

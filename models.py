@@ -8,8 +8,6 @@ from sqlalchemy.orm import sessionmaker
 #Database Object
 engine = create_engine('sqlite:///MessageRecordv2.db', connect_args={'check_same_thread': False})
 Base = declarative_base()
-Session = sessionmaker(bind=engine)
-session = Session()
 
 
 class Msg(Base):

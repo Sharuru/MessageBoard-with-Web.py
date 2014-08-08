@@ -2,10 +2,10 @@ __author__ = 'Mave'
 
 import os
 from time import ctime
-from web import input, setcookie, cookies
+from web import input, setcookie, cookies, ctx
 from jinja2 import Environment, FileSystemLoader
 from form import newPostForm, logInForm
-from models import Msg, Admin, session
+from models import Msg, Admin
 
 
 def render_template(template_name, **context):
@@ -22,7 +22,7 @@ def render_template(template_name, **context):
 
 class IndexHandler:
     def GET(self):
-        msgs = session.query(Msg).all()
+        msgs = ctx.orm.query(Msg).all()
         message_form = newPostForm()
         return render_template('index.html', msgs=msgs, form=message_form,
                                manage=cookies().get('isAdmin') == "Shimakaze,Go!")
@@ -34,7 +34,7 @@ class IndexHandler:
 
 class NewPostHandler:
     def POST(self):
-        msgs = session.query(Msg).all()
+        msgs = ctx.orm.query(Msg).all()
         message_form = newPostForm()
         receive_time = ctime()
         if not message_form.validates():
@@ -42,15 +42,15 @@ class NewPostHandler:
         else:
             new_msg = Msg(name=message_form.d.username, mail=message_form.d.mail, time=receive_time,
                           message=message_form.d.message)
-            session.add(new_msg)
-            session.commit()
+            ctx.orm.add(new_msg)
+            ctx.orm.commit()
             return render_template('newPost.html')
 
 
 class DeletePostHandler:
     def POST(self):
-        del_msg = session.query(Msg).filter(Msg.msgid == input().id).one()
-        session.delete(del_msg)
+        del_msg = ctx.orm.query(Msg).filter(Msg.msgid == input().id).one()
+        ctx.orm.delete(del_msg)
         return render_template('delPost.html')
 
 
@@ -60,7 +60,7 @@ class LogInHandler:
         if not login_form.validates():
             return render_template('logIn.html', loginFlag=False)
         else:
-            log_check = session.query(Admin).all()
+            log_check = ctx.orm.query(Admin).all()
             for record in log_check:
                 if login_form.d.admin_name == record.admin_name:
                     if login_form.d.admin_pass == record.admin_pass:
