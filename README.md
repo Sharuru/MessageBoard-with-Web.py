@@ -14,6 +14,7 @@ Easy to use, easy to config and easy to customize.
 * Set your admin account info.
     + After running models.py successfully, you may find your database file in directory, set your admin account and password in table 'admin'.  
 * Run ```python main.py```  
+
 ### That's the GOAL! Enjoy your Own MessageBoard! |ω・´)
 
 ## Latest Version
