@@ -9,6 +9,8 @@
 Login Status:
 {% if loginFlag == True %}
 Success!<br>
+{% elif loginFlag == 'Logout' %}
+Logout!<br>
 {% else %}
 Failed!<br>
 {% endif %}
