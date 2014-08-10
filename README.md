@@ -10,7 +10,7 @@ Easy to use, easy to config and easy to customize.
 + Clone this repositoriy to everywhere you like.  
 + Set your database.  
     + System will create tables when you first run it so you do not need to worry about it very well. But for **MySQL users**, you should need to set your own database and add it to **models.py** by yourself.   
-    + hen run: ```python models.py```  
+    + Then run: ```python models.py```  
 * Set your admin account info.
     + After running models.py successfully, you may find your database file in directory, set your admin account and password in table 'admin'.  
 * Run ```python main.py```  
