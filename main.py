@@ -1,10 +1,10 @@
 __author__ = 'Mave'
 
 import web
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import scoped_session
 import urls
 from views import *
-from models import engine
+from models import sessionmaker, engine
 
 
 reload(__import__('sys')).setdefaultencoding('utf-8')
