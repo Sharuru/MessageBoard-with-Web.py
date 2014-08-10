@@ -1,10 +1,8 @@
 __author__ = 'Mave'
 
-import MySQLdb
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import sessionmaker
 
 #Database Object
 engine = create_engine('mysql+mysqldb://username:password@localhost/database_name?charset=utf8')
