@@ -22,10 +22,12 @@ def render_template(template_name, **context):
 
 class IndexHandler:
     def GET(self):
-        msgs = ctx.orm.query(Msg).all()
+        page = int(input(page=1).page)
+        msgs = ctx.orm.query(Msg).limit(5).offset((page - 1) * 5).all()
+        t_page = ctx.orm.query(Msg).count()/5 + 1
         message_form = newPostForm()
         return render_template('index.html', msgs=msgs, form=message_form,
-                               manage=cookies().get('isAdmin') == "Shimakaze,Go!")
+                               manage=cookies().get('isAdmin') == "Shimakaze,Go!", page=page, t_page=t_page)
 
     def POST(self):
         setcookie('isAdmin', "", 1800)
