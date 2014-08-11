@@ -36,11 +36,13 @@ class IndexHandler:
 
 class NewPostHandler:
     def POST(self):
-        msgs = ctx.orm.query(Msg).all()
+        page = int(input(page=1).page)
+        msgs = ctx.orm.query(Msg).limit(5).offset((page - 1) * 5).all()
+        t_page = ctx.orm.query(Msg).count()/5 + 1
         message_form = newPostForm()
         receive_time = ctime()
         if not message_form.validates():
-            return render_template('index.html', msgs=msgs, form=message_form, is_input_legal=False)
+            return render_template('index.html', msgs=msgs, form=message_form, is_input_legal=False, page=page, t_page=t_page)
         else:
             new_msg = Msg(name=message_form.d.username, mail=message_form.d.mail, time=receive_time,
                           message=message_form.d.message)
