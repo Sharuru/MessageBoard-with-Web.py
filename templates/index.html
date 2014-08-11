@@ -24,7 +24,7 @@
 <body>
 <div class="container">
     <div class="title">
-        <h1 id = "title">&nbsp;<strong>MessageBoard</strong><span class="badge">Perhaps Beta ;P</span>&nbsp;&nbsp;<small>Homepage</small></h1>
+        <h1 id = "title">&nbsp;<a href="/" style=" text-decoration: none; color: black;" ><strong>MessageBoard</strong></a><span class="badge">Beta</span>&nbsp;&nbsp;<small>Homepage</small></h1>
         <h4>&nbsp;&nbsp;<em>With web.py, Jinja2 and BootStrap</em></h4>
     </div>
     <div class="message">
@@ -65,8 +65,9 @@
         <h5>&nbsp;&nbsp;You Can Leave NEW Message Here:</h5>
     </div>
     {% if is_input_legal == False %}
-    <div class="input-alert">
-        <h3><p class="bg-danger">Opps...It seems like you input something wrong :(</p></h3>
+    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      Opps...It seems like you input something wrong :(
     </div>
     {% endif %}
     <div class="new-message-form">
