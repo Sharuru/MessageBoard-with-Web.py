@@ -18,6 +18,4 @@ Easy to use, easy to config and easy to customize.
 ### That's the GOAL! Enjoy your Own MessageBoard! |ω・´)
 
 ## Latest Version
-v0.4.3 Milestone: Basic Version.
-
-
+v0.4.7 auto correct error parameters in pagination
