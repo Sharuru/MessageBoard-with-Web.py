@@ -60,13 +60,23 @@
             </tr>
             {% endfor %}
         </table>
+        <div class="pagenavi">
             <ul class="pagination">
+            {% if page - 1 == 0 %}
+            <li><a href="/?page=1">Top</a></li>
+            {% else %}
             <li><a href="/?page={{ page - 1 }}">&laquo;</a></li>
-            {% for page_num in range(1,t_page+1) %}
+            {% endif %}
+            {% for page_num in range(1,t_page) %}
             <li><a href="/?page={{ page_num }}">{{ page_num }}</a></li>
             {% endfor %}
+            {% if page + 1 == t_page + 1 %}
+            <li><a href="/?page={{ t_page }}">End</a></li>
+            {% else %}
             <li><a href="/?page={{ page + 1 }}">&raquo;</a></li>
+            {% endif %}
             </ul>
+        </div>
     </div>
     <div class="new-message-title">
         <h5>&nbsp;&nbsp;You Can Leave NEW Message Here:</h5>

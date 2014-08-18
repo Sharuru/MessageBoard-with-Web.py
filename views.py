@@ -23,8 +23,8 @@ def render_template(template_name, **context):
 class IndexHandler:
     def GET(self):
         page = int(input(page=1).page)
-        msgs = ctx.orm.query(Msg).order_by(Msg.msgid.desc()).limit(7).offset((page - 1) * 7).all()
-        t_page = ctx.orm.query(Msg).count()/7 + 1
+        msgs = ctx.orm.query(Msg).order_by(Msg.msgid.desc()).limit(8).offset((page - 1) * 8).all()
+        t_page = ctx.orm.query(Msg).count()/8 + 1
         message_form = newPostForm()
         return render_template('index.html', msgs=msgs, form=message_form,
                                manage=cookies().get('isAdmin') == "Shimakaze,Go!", page=page, t_page=t_page)
