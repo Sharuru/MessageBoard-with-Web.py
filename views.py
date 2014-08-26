@@ -20,10 +20,21 @@ def render_template(template_name, **context):
     return jinja_env.get_template(template_name).render(context)
 
 
+def link_database(page):
+    try_times = 5
+    for times in range(0, try_times):
+        try:
+            object = ctx.orm.query(Msg).order_by(Msg.msgid.desc()).limit(8).offset((page - 1) * 8).all()
+            return object
+        except:
+            ctx.orm.rollback()
+            pass
+
+
 class IndexHandler:
     def GET(self):
         page = int(input(page=1).page)
-        msgs = ctx.orm.query(Msg).order_by(Msg.msgid.desc()).limit(8).offset((page - 1) * 8).all()
+        msgs = link_database(page)
         t_page = ctx.orm.query(Msg).count()/8 + 1
         message_form = newPostForm()
         return render_template('index.html', msgs=msgs, form=message_form,
@@ -37,8 +48,8 @@ class IndexHandler:
 class NewPostHandler:
     def POST(self):
         page = int(input(page=1).page)
-        msgs = ctx.orm.query(Msg).order_by(Msg.msgid.desc()).limit(7).offset((page - 1) * 7).all()
-        t_page = ctx.orm.query(Msg).count()/7 + 1
+        msgs = link_database(page)
+        t_page = ctx.orm.query(Msg).count()/8 + 1
         message_form = newPostForm()
         receive_time = ctime()
         if not message_form.validates():
