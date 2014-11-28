@@ -7,7 +7,7 @@ MessageBoard with Web.py is a light messageboard system worked with Web.py, SQLA
 Easy to use, easy to config and easy to customize.  
 
 ## Usage
-+ Clone this repositoriy to everywhere you like.  
++ Clone this repository to everywhere you like.
 + Set your database.  
     + System will create tables when you first run it so you do not need to worry about it very well. But for **MySQL users**, you should need to set your own database and add it to **models.py** by yourself.   
     + Then run: ```python models.py```  
